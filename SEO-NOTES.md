@@ -1,7 +1,7 @@
 # Notes SEO - Institut Horizon Numérique
 
 Domaine de référence utilisé dans les balises canoniques, l'Open Graph et le
-sitemap : `https://www.horizonnumerique.cm`. **Si le domaine final est
+sitemap : `https://institut-horizon.vercel.app`. **Si le domaine final est
 différent, il faut le remplacer partout** (commande en fin de document).
 
 ---
@@ -14,7 +14,7 @@ différent, il faut le remplacer partout** (commande en fin de document).
   `Formation informatique à Douala | Horizon Numérique`
 - **Description** (147 caractères)
   `Centre de formation à Bonamoussadi, Douala. Développement web, réseaux,
-  marketing digital et bureautique. Cours du jour et du soir, de 3 à 12 mois.`
+marketing digital et bureautique. Cours du jour et du soir, de 3 à 12 mois.`
 - **Intention visée** : la requête large « formation informatique Douala ».
   La description énumère les filières et le rythme parce que ce sont les deux
   critères de tri du visiteur.
@@ -25,7 +25,7 @@ différent, il faut le remplacer partout** (commande en fin de document).
   `Le centre de formation | Horizon Numérique, Douala`
 - **Description** (151 caractères)
   `Ouvert en 2012 à Bonamoussadi, Horizon Numérique a formé 2 400 apprenants à
-  Douala. Équipe pédagogique, laboratoires, matériel et pédagogie par projet.`
+Douala. Équipe pédagogique, laboratoires, matériel et pédagogie par projet.`
 - **Intention visée** : réassurance. C'est la page que consulte le parent qui
   paie la formation, pas le jeune qui la suivra.
 
@@ -35,7 +35,7 @@ différent, il faut le remplacer partout** (commande en fin de document).
   `Nos 5 filières et leurs tarifs | Horizon Numérique`
 - **Description** (155 caractères)
   `Développement web, réseaux, marketing digital, bureautique et maintenance à
-  Douala. Programme, durée, tarif en FCFA et débouchés de chaque filière.`
+Douala. Programme, durée, tarif en FCFA et débouchés de chaque filière.`
 - **Intention visée** : la page la plus stratégique du site. Elle capte les
   requêtes de filière précise (« formation développement web Douala ») et
   celles qui contiennent « prix » ou « tarif ».
@@ -46,7 +46,7 @@ différent, il faut le remplacer partout** (commande en fin de document).
   `Salles et laboratoires en images | Horizon Numérique`
 - **Description** (152 caractères)
   `Salles de cours, laboratoire réseaux, salle de projet et remise des
-  attestations : découvrez le centre de formation de Bonamoussadi à Douala.`
+attestations : découvrez le centre de formation de Bonamoussadi à Douala.`
 - **Intention visée** : preuve matérielle. Un centre qui montre ses
   laboratoires rassure davantage qu'un centre qui les décrit.
 
@@ -56,7 +56,7 @@ différent, il faut le remplacer partout** (commande en fin de document).
   `Préinscription en ligne | Horizon Numérique, Douala`
 - **Description** (152 caractères)
   `Préinscrivez-vous gratuitement à l'une des cinq filières du centre de
-  formation de Bonamoussadi, Douala. Réponse du secrétariat sous 48 heures.`
+formation de Bonamoussadi, Douala. Réponse du secrétariat sous 48 heures.`
 - **Intention visée** : transactionnelle. C'est l'objectif de conversion du
   site entier.
 
@@ -97,10 +97,10 @@ les pages, et dans l'encadré de la page de préinscription.
 
 ## 3. Données structurées en place
 
-| Page          | Type Schema.org |
-| ------------- | --------------- |
-| Accueil       | `EducationalOrganization` avec `address`, `geo` (4.0900 / 9.7400), `telephone`, `email`, `openingHours`, `foundingDate`, `numberOfStudents`, `sameAs` |
-| Les filières  | Un `Course` par filière, avec `provider`, `coursePrerequisites`, `educationalCredentialAwarded`, `offers` (prix en XAF) et `hasCourseInstance` renseignant `courseMode` et `courseWorkload` |
+| Page         | Type Schema.org                                                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accueil      | `EducationalOrganization` avec `address`, `geo` (4.0900 / 9.7400), `telephone`, `email`, `openingHours`, `foundingDate`, `numberOfStudents`, `sameAs`                                       |
+| Les filières | Un `Course` par filière, avec `provider`, `coursePrerequisites`, `educationalCredentialAwarded`, `offers` (prix en XAF) et `hasCourseInstance` renseignant `courseMode` et `courseWorkload` |
 
 Les `Course` peuvent faire apparaître les formations dans les résultats
 enrichis de Google avec leur durée et leur tarif. C'est un avantage
@@ -153,7 +153,7 @@ Un témoignage vérifiable vaut dix arguments commerciaux.
 ### 4. Vérifier le site dans la Search Console
 
 Sur `search.google.com/search-console`, ajoutez la propriété et soumettez
-`https://www.horizonnumerique.cm/sitemap.xml`. Surveillez les requêtes qui
+`https://institut-horizon.vercel.app/sitemap.xml`. Surveillez les requêtes qui
 contiennent un nom de filière : elles indiquent quelles formations chercher à
 remplir en priorité pour la session suivante.
 

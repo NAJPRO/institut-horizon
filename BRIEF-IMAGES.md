@@ -176,14 +176,14 @@ convert source.jpg -resize 1080x810^ -gravity center -extent 1080x810 \
 cwebp -q 78 assets/img/labo-reseaux.jpg -o assets/img/labo-reseaux.webp
 
 # Portrait d'ancien, carré, cadrage sur le visage
-convert source.jpg -resize 400x400^ -gravity north -extent 400x400 \
+convert ancien-sf.jpeg -resize 400x400^ -gravity north -extent 400x400 \
         -quality 84 -interlace Plane assets/img/ancien-sf.jpg
 cwebp -q 80 assets/img/ancien-sf.jpg -o assets/img/ancien-sf.webp
 
 # Hero, panoramique
-convert source.jpg -resize 2000x860^ -gravity center -extent 2000x860 \
+convert hero.jpeg -resize 2000x860^ -gravity center -extent 2000x860 \
         -quality 80 -interlace Plane assets/img/hero.jpg
-cwebp -q 76 assets/img/hero.jpg -o assets/img/hero.webp
+cwebp -q 76 hero.jpg -o hero.webp
 ```
 
 ### Poids à respecter

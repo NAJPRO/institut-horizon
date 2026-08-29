@@ -187,11 +187,11 @@ par :
 
 ### Changer le numéro de téléphone
 
-Le numéro `+237 6 96 33 40 82` est un **numéro d'exemple**.
+Le numéro `+237 6 78 46 87 28` est le **numéro actuellement en ligne**.
 
 ```bash
-grep -rl "696334082" . | xargs sed -i "s|696334082|VOTRE_NUMERO|g"
-grep -rl "6 96 33 40 82" . | xargs sed -i "s|6 96 33 40 82|VOTRE NUMERO|g"
+grep -rl "678468728" . | xargs sed -i "s|678468728|VOTRE_NUMERO|g"
+grep -rl "6 78 46 87 28" . | xargs sed -i "s|6 78 46 87 28|VOTRE NUMERO|g"
 ```
 
 ---
@@ -212,6 +212,81 @@ grep -rl "6 96 33 40 82" . | xargs sed -i "s|6 96 33 40 82|VOTRE NUMERO|g"
 - chiffres tabulaires pour l'alignement des tarifs et des durées.
 
 Poids de la page d'accueil, images comprises : environ **106 Ko**.
+
+---
+
+## Animations
+
+Le visiteur compare deux ou trois centres et cherche quatre réponses :
+quelles filières, combien ça coûte, combien de temps, est-ce que ça débouche.
+Toute la mise en page vise à rendre ces réponses trouvables en moins de trente
+secondes ; **le mouvement obéit à la même règle**. Il est donc bref — 460 ms,
+contre 820 ms sur un site où l'on cherche à apaiser — il n'attend jamais, et
+il sert à diriger le regard vers les informations décisives plutôt qu'à
+décorer.
+
+Le mouvement est piloté par des attributs dans le HTML plutôt que par des
+sélecteurs de structure : un bloc déplacé garde son animation, un bloc ajouté
+en hérite en écrivant un attribut.
+
+| Attribut | Effet |
+| --- | --- |
+| `data-hero` | Anime les enfants directs dès le chargement, en cascade. Le bandeau de session entre en premier, avant le titre : c'est l'information la plus urgente de la page. |
+| `data-anim="montee"` | Entrée par le bas. Le cas général. |
+| `data-anim="gauche"` / `"droite"` | Entrée latérale, pour les colonnes appariées. |
+| `data-anim="titre"` | Surtitre, titre puis chapô entrent dans l'ordre de lecture. |
+| `data-anim="chiffres"` | Bloc signature, voir ci-dessous. |
+| `data-anim="etape"` | Trace le filet électrique au-dessus d'une étape d'inscription, puis fait entrer son numéro et son texte. |
+| `data-anim="fiche"` | Entrée sobre des fiches de filière détaillées. |
+| `data-anim="pastilles"` | Vague rapide sur les entreprises partenaires : elles se lisent d'un bloc, pas une par une. |
+
+Chaque élément accepte `style="--delai:120ms"` pour retarder son entrée et
+composer une cascade.
+
+### Le bloc signature : les quatre chiffres
+
+C'est ici que se joue la quatrième question, celle qui décide vraiment : est-ce
+que ça débouche sur un emploi. Les valeurs montent depuis zéro et arrivent dans
+l'ordre, **le taux de placement en dernier**. Le compte n'est pas une
+décoration : il retient le regard sur les seuls chiffres que le visiteur
+retiendra de sa visite.
+
+La valeur cible vit dans `data-chiffre`, le suffixe éventuel dans
+`data-suffixe`, et le texte visible reste juste dans le HTML :
+
+```html
+<p class="chiffre__valeur" data-chiffre="78" data-suffixe=" %">78 %</p>
+```
+
+Sans JavaScript, le chiffre est déjà là, correctement formaté. Le script ne
+fait que le recompter. Le rang du bloc (`style="--rang:3"`) pilote à la fois
+son entrée en CSS et le départ de son compte en JavaScript, pour que le
+chiffre ne monte pas avant que sa carte ne soit visible.
+
+### Dépliage d'une filière
+
+Le panneau de détail s'ouvre en 320 ms au lieu d'apparaître d'un coup, pour
+que le visiteur garde le fil de l'endroit où il en était dans la carte.
+L'animation ne touche pas au mécanisme : le panneau reste masqué par
+l'attribut `hidden`, donc il sort toujours de l'arbre d'accessibilité et de la
+navigation au clavier quand il est replié, et `aria-expanded` reste la source
+de vérité.
+
+### Les trois garde-fous
+
+1. **Sans JavaScript, rien n'est masqué.** Le CSS ne cache un bloc animé que
+   sous le sélecteur `.js`, classe posée par un script d'une ligne dans le
+   `<head>`.
+2. **`prefers-reduced-motion: reduce` désactive tout**, en CSS comme en
+   JavaScript : les blocs sont révélés d'emblée, les compteurs affichent leur
+   valeur finale et l'en-tête ne réagit plus au défilement.
+3. **Aucun contenu ne dépend d'une animation pour exister.** Les valeurs des
+   compteurs sont écrites dans le HTML ; le script ne fait que les recompter.
+
+Le script utilise un `IntersectionObserver` qui libère chaque élément dès
+qu'il est apparu, et une seule mesure par image pour l'ombre de l'en-tête. Si
+le navigateur ne fournit pas `IntersectionObserver`, tout le contenu est
+affiché immédiatement.
 
 ---
 

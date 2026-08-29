@@ -40,6 +40,10 @@
   --rayon-l: 16px;
   --ombre: 0 8px 26px rgba(16, 26, 61, 0.09);
   --transition: 220ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  /* Entree des blocs animes. Volontairement breve : le visiteur
+     compare deux ou trois centres, le mouvement doit accompagner sa
+     lecture, jamais la faire attendre. */
+  --entree: 460ms cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 *,
@@ -1284,4 +1288,398 @@ textarea {
   .vignette:hover img {
     transform: none;
   }
+}
+
+/* ==========================================================================
+   Animations
+
+   Le visiteur compare deux ou trois centres et cherche quatre reponses :
+   quelles filieres, combien ca coute, combien de temps, est-ce que ca
+   debouche. La regle du site est de rendre ces reponses trouvables en moins
+   de trente secondes ; le mouvement obeit a la meme regle. Il est donc bref
+   (460 ms), il n'attend jamais, et il sert a diriger le regard vers les
+   informations decisives plutot qu'a decorer.
+
+   Les blocs marques data-anim ne sont masques que si <html> porte la classe
+   js, donc une page sans JavaScript reste entierement lisible.
+   ========================================================================== */
+.js [data-anim] {
+  opacity: 0;
+  transition: opacity var(--entree) var(--delai, 0ms),
+    transform var(--entree) var(--delai, 0ms);
+}
+
+.js [data-anim="montee"],
+.js [data-anim="fiche"] {
+  transform: translateY(18px);
+}
+
+.js [data-anim="gauche"] {
+  transform: translateX(-18px);
+}
+
+.js [data-anim="droite"] {
+  transform: translateX(18px);
+}
+
+.js [data-anim].est-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Titre de section : surtitre, titre, chapo, dans l'ordre de lecture
+   -------------------------------------------------------------------------- */
+.js [data-anim="titre"] {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-anim="titre"] > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--entree), transform var(--entree);
+}
+
+.js [data-anim="titre"] > *:nth-child(2) { transition-delay: 80ms; }
+.js [data-anim="titre"] > *:nth-child(3) { transition-delay: 160ms; }
+
+.js [data-anim="titre"].est-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Bloc signature : les quatre chiffres
+
+   C'est ici que se joue la quatrieme question, celle qui decide vraiment :
+   est-ce que ca debouche sur un emploi. Les valeurs montent depuis zero et
+   arrivent dans l'ordre, le taux de placement en dernier. Le compte n'est pas
+   une decoration : il retient le regard sur les seuls chiffres que le
+   visiteur retiendra de sa visite.
+   -------------------------------------------------------------------------- */
+.js [data-anim="chiffres"] {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-anim="chiffres"] .chiffre {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--entree) calc(var(--rang, 0) * 110ms),
+    transform var(--entree) calc(var(--rang, 0) * 110ms);
+}
+
+.js [data-anim="chiffres"].est-visible .chiffre {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Etapes d'inscription : le filet electrique se trace avant le contenu
+   -------------------------------------------------------------------------- */
+.js [data-anim="etape"] {
+  opacity: 1;
+  transform: none;
+  border-top-color: transparent;
+}
+
+.js [data-anim="etape"]::after {
+  content: "";
+  position: absolute;
+  inset: -3px auto auto 0;
+  height: 3px;
+  width: 0;
+  background: var(--electrique);
+  transition: width 520ms cubic-bezier(0.2, 0.7, 0.3, 1) var(--delai, 0ms);
+}
+
+.js .section--nuit [data-anim="etape"]::after {
+  background: var(--electrique-clair);
+}
+
+.js [data-anim="etape"].est-visible::after {
+  width: 100%;
+}
+
+.js [data-anim="etape"] > *,
+.js [data-anim="etape"]::before {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--entree) calc(var(--delai, 0ms) + 140ms),
+    transform var(--entree) calc(var(--delai, 0ms) + 140ms);
+}
+
+.js [data-anim="etape"].est-visible > *,
+.js [data-anim="etape"].est-visible::before {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Pastilles partenaires : une vague rapide, elles se lisent d'un bloc
+   -------------------------------------------------------------------------- */
+.js [data-anim="pastilles"] {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-anim="pastilles"] li {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 380ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    transform 380ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.js [data-anim="pastilles"] li:nth-child(1) { transition-delay: 0ms; }
+.js [data-anim="pastilles"] li:nth-child(2) { transition-delay: 45ms; }
+.js [data-anim="pastilles"] li:nth-child(3) { transition-delay: 90ms; }
+.js [data-anim="pastilles"] li:nth-child(4) { transition-delay: 135ms; }
+.js [data-anim="pastilles"] li:nth-child(5) { transition-delay: 180ms; }
+.js [data-anim="pastilles"] li:nth-child(6) { transition-delay: 225ms; }
+.js [data-anim="pastilles"] li:nth-child(7) { transition-delay: 270ms; }
+.js [data-anim="pastilles"] li:nth-child(8) { transition-delay: 315ms; }
+
+.js [data-anim="pastilles"].est-visible li {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Entree de page : hero et bandeaux
+   Le bandeau de session porte l'information la plus urgente de la page, il
+   entre donc en premier, avant le titre.
+   -------------------------------------------------------------------------- */
+@keyframes entree-bloc {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.js [data-hero] > * {
+  animation: entree-bloc var(--entree) backwards;
+}
+
+.js [data-hero] > *:nth-child(1) { animation-delay: 80ms; }
+.js [data-hero] > *:nth-child(2) { animation-delay: 180ms; }
+.js [data-hero] > *:nth-child(3) { animation-delay: 280ms; }
+.js [data-hero] > *:nth-child(4) { animation-delay: 380ms; }
+.js [data-hero] > *:nth-child(5) { animation-delay: 480ms; }
+
+/* Lente derive du fond : 24 secondes, imperceptible en lecture. Le hero porte
+   deja overflow hidden, l'agrandissement ne cree donc pas de defilement
+   horizontal. */
+@keyframes derive-fond {
+  from { transform: scale(1.04); }
+  to { transform: scale(1.12) translate3d(-1%, -0.5%, 0); }
+}
+
+.js .hero__fond {
+  animation: derive-fond 24s ease-in-out infinite alternate;
+}
+
+/* --------------------------------------------------------------------------
+   En-tete au defilement
+   -------------------------------------------------------------------------- */
+.entete {
+  transition: box-shadow var(--transition);
+}
+
+.entete[data-defile="true"] {
+  box-shadow: 0 6px 20px rgba(16, 26, 61, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Depliage d'une filiere
+   Le panneau s'ouvre au lieu d'apparaitre d'un coup : le visiteur garde le
+   fil de l'endroit ou il en etait dans la carte.
+   -------------------------------------------------------------------------- */
+@keyframes deplie-detail {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.js .filiere__detail:not([hidden]) {
+  animation: deplie-detail 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Micro-interactions
+   -------------------------------------------------------------------------- */
+.filiere {
+  transition: border-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.filiere:hover {
+  transform: translateY(-3px);
+}
+
+/* Le tarif est l'information que le visiteur cherche en premier dans la
+   carte : il se souligne a l'approche, sans bouger la mise en page. */
+.filiere__donnees .tarif {
+  transition: color var(--transition);
+}
+
+.filiere:hover .filiere__donnees .tarif {
+  color: var(--vert);
+}
+
+.nav__lien {
+  position: relative;
+}
+
+.nav__lien::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  background: var(--jaune);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition);
+}
+
+.nav__lien:hover::after,
+.nav__lien[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.temoignage,
+.vignette,
+.fiche {
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.temoignage:hover {
+  box-shadow: var(--ombre);
+}
+
+.partenaires li {
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.bouton {
+  transition: background var(--transition), color var(--transition),
+    border-color var(--transition), transform var(--transition);
+}
+
+.bouton:hover {
+  transform: translateY(-2px);
+}
+
+.bouton:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Menu mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 1000px) {
+  .nav[data-ouvert="true"] {
+    animation: entree-bloc 240ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
+  .nav[data-ouvert="true"] .nav__liste li {
+    animation: entree-bloc 300ms cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+  }
+
+  .nav[data-ouvert="true"] .nav__liste li:nth-child(1) { animation-delay: 30ms; }
+  .nav[data-ouvert="true"] .nav__liste li:nth-child(2) { animation-delay: 65ms; }
+  .nav[data-ouvert="true"] .nav__liste li:nth-child(3) { animation-delay: 100ms; }
+  .nav[data-ouvert="true"] .nav__liste li:nth-child(4) { animation-delay: 135ms; }
+  .nav[data-ouvert="true"] .nav__liste li:nth-child(5) { animation-delay: 170ms; }
+}
+
+/* --------------------------------------------------------------------------
+   Bouton WhatsApp : entree differee, puis stable
+   -------------------------------------------------------------------------- */
+.js .whatsapp {
+  animation: entree-bloc 420ms cubic-bezier(0.2, 0.7, 0.3, 1) 800ms backwards;
+  transition: transform var(--transition);
+}
+
+.whatsapp:hover {
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Titre editorial
+   Le reset annule toutes les marges : sans cette regle, un titre de colonne
+   se colle a son premier paragraphe.
+   -------------------------------------------------------------------------- */
+.titre-editorial {
+  font-family: var(--display);
+  font-size: var(--t-m);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.titre-editorial--large {
+  font-size: var(--t-l);
+  line-height: 1.1;
+  margin-bottom: 1.1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Mouvement reduit : on neutralise tout, sans jamais laisser un contenu
+   masque. Regle non negociable.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-anim],
+  .js [data-anim="titre"] > *,
+  .js [data-anim="chiffres"] .chiffre,
+  .js [data-anim="etape"] > *,
+  .js [data-anim="etape"]::before,
+  .js [data-anim="pastilles"] li,
+  .js [data-hero] > *,
+  .js .whatsapp,
+  .js .filiere__detail:not([hidden]) {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .js [data-anim="etape"]::after {
+    width: 100% !important;
+    transition: none !important;
+  }
+
+  .js .hero__fond {
+    animation: none !important;
+  }
+
+  .nav__lien::after,
+  .filiere__bouton svg {
+    transition: none !important;
+  }
+
+  .bouton:hover,
+  .filiere:hover {
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Signature du concepteur
+   Le nom passe en jaune de marque pour se detacher du fond nuit du pied
+   (contraste 11.9:1, au-dela du seuil AAA) sans concurrencer les titres.
+   -------------------------------------------------------------------------- */
+.pied__signature span {
+  color: var(--jaune);
+  font-weight: 600;
 }
